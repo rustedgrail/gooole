@@ -3,9 +3,13 @@ import tornado.websocket
 import tornado.ioloop
 import tornado.web
 
+clients = []
+
 class WSHandler(tornado.websocket.WebSocketHandler):
     def open(self):
-        print 'new connection'
+        clients.append(self)
+        print 'new connection added'
+        print len(clients)
         self.write_message("Hello World")
       
     def on_message(self, message):

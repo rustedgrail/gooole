@@ -1,22 +1,8 @@
 import tornado.httpserver
-import tornado.websocket
 import tornado.ioloop
 import tornado.web
 
-clients = []
-
-class WSHandler(tornado.websocket.WebSocketHandler):
-    def open(self):
-        clients.append(self)
-        print 'new connection added'
-        print len(clients)
-        self.write_message("Hello World")
-      
-    def on_message(self, message):
-        print 'message received %s' % message
- 
-    def on_close(self):
-        print 'connection closed'
+from jeem_runner import *
  
 application = tornado.web.Application([
     (r'/', WSHandler),

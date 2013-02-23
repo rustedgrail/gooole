@@ -1,0 +1,13 @@
+<html>
+  <head>
+    <script>
+      var host = 'localhost';
+      var port = '8888';
+      var uri = '';
+ 
+      ws = new WebSocket("ws://" + host + ":" + port + uri);
+      ws.onmessage = function(evt) {alert("message received: " + evt.data)};
+      ws.onclose = function(evt) { alert("Connection close"); };
+    </script>
+  </head>
+</html>

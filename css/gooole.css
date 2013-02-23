@@ -1,5 +1,9 @@
-input {
+#voteInputs input {
     width: 50px;
+}
+
+#whatToDo {
+    padding-bottom: 10px;
 }
 
 #voteLabels {
@@ -9,8 +13,19 @@ input {
 
 #voteInputs {
     display: inline-block;
+    width: 27%;
 }
 
 #voteControls {
     padding: 20px;
+    width: 40%;
+    display: inline-block;
+}
+
+#submitVote {
+}
+
+#possibleVotes {
+    width: 40%;
+    display: inline-block;
 }

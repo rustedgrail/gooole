@@ -12,7 +12,6 @@
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/gooole.css">
-        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
     <body>
 
@@ -21,7 +20,7 @@
             Welcome to GOOOLE!!
         </h1>
 
-        <div id=voteControls>
+        <span id=voteControls>
             <div id=whatToDo>
                 Vote for time signature, bpm and length in measure.
             </div>
@@ -37,8 +36,20 @@
                 <input type=number maxlength=3><br>
                 <input type=number maxlength=3>
             </span>
-        </div>
 
+            <input type=submit id=submitVote>
+        </span>
+
+        <span id=possibleVotes>
+        </span>
+
+        <script type="text/x-handlebars-template" id=songInfoTemplate>
+            <span id=songInfo>
+                You are playing {{measures}} measures of {{instrument}} in {{timeSig}} time at {{bpm}} bpm.
+            </span>
+        </script>
+
+        <script src="https://raw.github.com/wycats/handlebars.js/1.0.0-rc.3/dist/handlebars.js"></script>
         <script src="lib/MIDI.js/inc/base64binary.js"></script>
         <script src="lib/MIDI.js/build/MIDI.min.js"></script>
         <script src="js/main.js"></script>

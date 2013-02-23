@@ -1,4 +1,17 @@
 (function() {
+    var songInfoTemplate = Handlebars.compile(document.getElementById('songInfoTemplate').innerHTML);
+
+    var songInfo = {
+        measures: 8
+        , instrument: 'spoons'
+        , timeSig: '7/8'
+        , bpm: 246
+    };
+
+    if (true) {
+        document.getElementById('voteControls').innerHTML = songInfoTemplate(songInfo);
+    }
+
     var keyToNote = {
         65: 24 //A, C1
         , 87: 25 //W, C#1

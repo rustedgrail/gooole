@@ -3,6 +3,7 @@
 
     var songInfoTemplate = Handlebars.compile(document.getElementById('songInfoTemplate').innerHTML);
     var songInfoVote = Handlebars.compile(document.getElementById('songVoteTemplate').innerHTML);
+    var recordingVote = Handlebars.compile(document.getElementById('recordingVoteTemplate').innerHTML);
 
     var songInfo = {
         measures: 8
@@ -10,10 +11,6 @@
         , timeSig: '7/8'
         , bpm: 246
     };
-
-    if (false) {
-        document.getElementById('voteControls').innerHTML = songInfoTemplate(songInfo);
-    }
 
     var keyToNote = {
         65: 24 //A, C1
@@ -78,7 +75,7 @@
             configVoteSubmit();
         });
     });
-    
+
     function configVoteSubmit() {
         var submitConfigVote = document.getElementById('submitConfigVote');
         submitConfigVote.addEventListener('click', function(e) {
@@ -89,15 +86,19 @@
                     socks.publish({ws_id: radios[i].value}, function(data) {});
                 }
             }
-        });            
+        });
     }
-    
+
     function startPlaying() {
         notesPlayed = [];
         startTime = new Date().getTime();
     }
 
     function playback() {
+        playbackAnyTrack(notesPlayed);
+    }
+
+    function playbackAnyTrack(notesPlayed) {
         notesPlayed.forEach(function(note) {
             console.log(note);
             if (note.on) {
@@ -110,7 +111,16 @@
     }
 
     function sendRecording() {
-        socks.publish(notesPlayed, alert);
+        socks.publish(notesPlayed, startVoteOnMusic);
+    }
+
+    function startVoteOnMusic(data) {
+        var pubs = data.publication;
+        var span = document.getElementById('possibleVotes');
+        span.innerHTML = '';
+        for (key in pubs) {
+            span.innerHTML += recordingVote({ws_id: key});
+        }
     }
 
     function updateNotes() {

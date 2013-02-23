@@ -27,12 +27,11 @@
 
 #voteInputs {
     display: inline-block;
-    width: 27%;
 }
 
 #voteControls {
     padding: 20px;
-    width: 40%;
+    width: 30%;
     display: inline-block;
 }
 

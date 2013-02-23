@@ -83,7 +83,8 @@
             var radios = possible_votes.getElementsByTagName('input');
             for (var i=0; i < radios.length; ++i) {
                 if (radios[i].checked === true) {
-                    socks.publish({ws_id: radios[i].value}, function(data) {});
+                    socks.vote(radios[i].value, function(data) {});
+                    break;
                 }
             }
         });
@@ -165,6 +166,11 @@ function socketTown() {
         ws.onclose = function(evt) { alert("Connection close"); };
     }
 
+    function vote(message) {
+		var message = { 'event': 'vote', 'parameters': {'message': message} }
+		ws.send(JSON.stringify(message));
+    }
+
   	function publish(message, callback) {
   	    socks.callback = callback;
 		var message = { 'event': 'publish', 'parameters': {'message': message} }
@@ -175,6 +181,7 @@ function socketTown() {
 	return {
 	    init: init,
 	    publish: publish,
+	    vote: vote,
 	    close: close_conn
 	}
 }

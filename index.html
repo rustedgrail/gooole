@@ -44,7 +44,13 @@
         </span>
 
         <span id=rightBar>
-            <input id=beginnerMode type=checkbox>Beginner Mode<br>
+            <div class=padding>
+                <input type=button value="Start Playing" id=startPlaying><br>
+                <input type=button value="Send Recording" id=sendRecording>
+            </div>
+            <div class=padding>
+                <input id=beginnerMode type=checkbox>Beginner Mode
+            </div>
 
             <select id=rootNote>
                 <option value=12>C
@@ -59,17 +65,19 @@
             <select id=modeSelect>
                 <option value=1>Major</option>
                 <option value=0>Minor</option>
-            </select><br>
+            </select>
 
-            Octave: <select id=octave>
-                <option value='-1'>-1</option>
-                <option value=0>0</option>
-                <option value=1>1</option>
-                <option value=2>2</option>
-                <option value=3>3</option>
-                <option value=4>4</option>
-                <option value=5>5</option>
-            </select><br>
+            <div class=padding>
+                Octave: <select id=octave>
+                    <option value='-1'>-1</option>
+                    <option value=0>0</option>
+                    <option value=1>1</option>
+                    <option value=2>2</option>
+                    <option value=3>3</option>
+                    <option value=4>4</option>
+                    <option value=5>5</option>
+                </select>
+            </div>
 
             <input type=button id=submitKeyChange value="Change Keys">
         </span>

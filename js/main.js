@@ -56,18 +56,34 @@
         , 75: 36 //K, C2 
     };
 
-    var playing = {};
+    var notesPlayed = [], startTime = new Date().getTime(), playing = {};
 
+    document.getElementById('submitKeyChange').addEventListener('click', updateNotes);
+    document.getElementById('startPlaying').addEventListener('click', startPlaying);
+    document.getElementById('sendRecording').addEventListener('click', sendRecording);
     document.body.addEventListener('keydown', function(e) {
         if (!playing[e.which]) {
             MIDI.noteOn(0, keyToNote[e.which], 127, 0);
             playing[e.which] = true;
+            notesPlayed.push({
+                on: true
+                , channel: 0
+                , note: keyToNote[e.which]
+                , velocity: 127
+                , delay: new Date().getTime() - startTime
+            });
         }
     });
 
     document.body.addEventListener('keyup', function(e) {
         MIDI.noteOff(0, keyToNote[e.which], 0);
         playing[e.which] = false;
+        notesPlayed.push({
+            on: false
+            , channel: 0
+            , note: keyToNote[e.which]
+            , delay: new Date().getTime() - startTime
+        });
     });
 
     MIDI.loadPlugin(function() { },
@@ -84,6 +100,42 @@
             document.getElementById('possibleVotes').innerHTML = songInfoVote(data);
         })
     });
+
+    function startPlaying() {
+        notesPlayed = [];
+        startTime = new Date().getTime();
+    }
+
+    function sendRecording() {
+        console.log(JSON.stringify(notesPlayed));
+    }
+
+    function updateNotes() {
+        var keys, beginnerMode = document.getElementById('beginnerMode').checked;
+        var rootNote = (+ document.getElementById('rootNote').value);
+        var majorKey = !!document.getElementById('modeSelect').value;
+        var octaveOffset = 12 * document.getElementById('octave').value;
+
+        if (beginnerMode) {
+            keys = [65, 83, 68, 70, 71, 72, 74, 75];
+            if (majorKey) {
+                notes = [0, 2, 4, 5, 7, 9, 11, 12];
+            }
+            else {
+                notes = [0, 2, 3, 5, 7, 8, 10, 12];
+            }
+        }
+        else {
+            keys = [65, 87, 83, 69, 68, 70, 84, 71, 89, 72, 85, 74, 75];
+        }
+
+        keyToNote = {};
+
+        keys.forEach(function(key, index) {
+            var offset = beginnerMode ? notes[index] : index
+            keyToNote[key] = rootNote + offset + octaveOffset;
+        });
+    }
 }());
 
 function socketTown() {

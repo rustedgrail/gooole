@@ -93,7 +93,7 @@
     }
 
     function sendRecording() {
-        console.log(JSON.stringify(notesPlayed));
+        socks.publish({ data: notesPlayed }, alert);
     }
 
     function updateNotes() {

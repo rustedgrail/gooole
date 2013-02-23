@@ -40,8 +40,11 @@
             <input type=submit id=submitVote>
         </span>
 
-        <span id=possibleVotes>
-        </span>
+		<span id=voteContainer>
+	        <span id=possibleVotes>
+	        </span>
+			<input type=submit id=submitConfigVote>
+		</span>
 
         <span id=rightBar>
             <div class="recordingControls padding">
@@ -90,12 +93,10 @@
         </script>
 
         <script type="text/x-handlebars-template" id=songVoteTemplate>
-			{{#each config}}
-			<input type=radio value="{{this.ws_id}}">
-            <div>Time Signature: {{this.timesigunder}}/{{this.timesigover}}</div>
-            <div>BPM: {{this.bpm}}</div>
-            <div>Length: {{this.measures}}</div>
-			{{/each}}
+			<input type=radio value={{ws_id}}>
+            <span>Time Signature: {{timesigover}}/{{timesigunder}}</span>
+            <span>BPM: {{bpm}}</span>
+            <span>Length: {{measurelen}}</span>
         </script>
 
         <script src="https://raw.github.com/wycats/handlebars.js/1.0.0-rc.3/dist/handlebars.js"></script>

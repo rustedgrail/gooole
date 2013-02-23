@@ -2,7 +2,7 @@
     MIDI.loadPlugin(function() {}, 'lib/MIDI.js/MIDI/soundfont/soundfont-ogg-guitar.js');
 
     var songInfoTemplate = Handlebars.compile(document.getElementById('songInfoTemplate').innerHTML);
-    var songInfoVote = Handlebars.compile(document.getElementById('songInfoTemplate').innerHTML);
+    var songInfoVote = Handlebars.compile(document.getElementById('songVoteTemplate').innerHTML);
 
     var songInfo = {
         measures: 8
@@ -62,18 +62,35 @@
         });
     });
 
-    var submit = document.getElementById('submitVote');
-    submit.addEventListener('click', function(e) {
+    var confSubmit = document.getElementById('submitVote');
+    confSubmit.addEventListener('click', function(e) {
         socks.publish({
             timesigover: document.getElementById('timesigover').value,
             timesigunder: document.getElementById('timesigunder').value,
             bpm: document.getElementById('bpm').value,
             measurelen: document.getElementById('measurelen').value
-        }, function(data){ 
-            document.getElementById('possibleVotes').innerHTML = songInfoVote(data);
-        })
+        }, function(data){
+            document.getElementById('possibleVotes').innerHTML = '';
+            for (var i=0 ; i < data.publication.length; ++i) {
+                document.getElementById('possibleVotes').innerHTML += songInfoVote(data.publication[i]);
+            }
+            configVoteSubmit();
+        });
     });
-
+    
+    function configVoteSubmit() {
+        var submitConfigVote = document.getElementById('submitConfigVote');
+        submitConfigVote.addEventListener('click', function(e) {
+            var possible_votes = document.getElementById('possibleVotes');
+            var radios = possible_votes.getElementsByTagName('input');
+            for (var i=0; i < radios.length; ++i) {
+                if (radios[i].checked === true) {
+                    socks.publish({ws_id: radios[i].value}, function(data) {});
+                }
+            }
+        });            
+    }
+    
     function startPlaying() {
         notesPlayed = [];
         startTime = new Date().getTime();

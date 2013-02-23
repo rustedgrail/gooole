@@ -8,11 +8,11 @@
         , bpm: 246
     };
 
-    document.getElementById('rightBar').addEventListener('click', function() {
+    document.getElementById('submitKeyChange').addEventListener('click', function() {
         var keys, beginnerMode = document.getElementById('beginnerMode').checked;
-        var rootNote = (+ document.getElementById('rootNote').selectedvalue);
-        var majorKey = !!document.getElementById('modeSelect').selectedValue;
-        var octaveOffset = 12 * document.getElementById('octave').selectedValue;
+        var rootNote = (+ document.getElementById('rootNote').value);
+        var majorKey = !!document.getElementById('modeSelect').value;
+        var octaveOffset = 12 * document.getElementById('octave').value;
 
         if (beginnerMode) {
             keys = [65, 83, 68, 70, 71, 72, 74, 75];

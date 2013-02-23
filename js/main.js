@@ -8,6 +8,33 @@
         , bpm: 246
     };
 
+    document.getElementById('rightBar').addEventListener('click', function() {
+        var keys, beginnerMode = document.getElementById('beginnerMode').checked;
+        var rootNote = (+ document.getElementById('rootNote').selectedvalue);
+        var majorKey = !!document.getElementById('modeSelect').selectedValue;
+        var octaveOffset = 12 * document.getElementById('octave').selectedValue;
+
+        if (beginnerMode) {
+            keys = [65, 83, 68, 70, 71, 72, 74, 75];
+            if (majorKey) {
+                notes = [0, 2, 4, 5, 7, 9, 11, 12];
+            }
+            else {
+                notes = [0, 2, 3, 5, 7, 8, 10, 12];
+            }
+        }
+        else {
+            keys = [65, 87, 83, 69, 68, 70, 84, 71, 89, 72, 85, 74, 75];
+        }
+
+        keyToNote = {};
+
+        keys.forEach(function(key, index) {
+            var offset = beginnerMode ? notes[index] : index
+            keyToNote[key] = rootNote + offset + octaveOffset;
+        });
+    });
+
     if (false) {
         document.getElementById('voteControls').innerHTML = songInfoTemplate(songInfo);
     }
@@ -58,7 +85,7 @@
 }());
 
 function socketTown() {
-    function init() {        
+    function init() {
         var host = '192.168.1.157';
         var port = '8888';
         var uri = '';
@@ -80,5 +107,6 @@ function socketTown() {
 	    close: close_conn
 	}
 }
+
 socks = socketTown();
 socks.init();

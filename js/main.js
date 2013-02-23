@@ -1,5 +1,5 @@
 (function() {
-    var keyToNote = { 
+    var keyToNote = {
         65: 24 //A, C1
         , 87: 25 //W, C#1
         , 83: 26 //S, D1
@@ -13,7 +13,7 @@
         , 85: 34 //U, A#1 
         , 74: 35 //J, B1 
         , 75: 36 //K, C2 
-        };
+    };
 
     var playing = {};
 
@@ -29,11 +29,6 @@
         playing[e.which] = false;
     });
 
-    MIDI.loadPlugin(function() {
-        for (var i = 0; i < 100; i++) {
-                var delay = i / 4;
-                var note = MIDI.pianoKeyOffset + i;
-                var velocity = 127;
-        }
-    }, 'lib/MIDI.js/MIDI/soundfont/soundfont-ogg-guitar.js');
+    MIDI.loadPlugin(function() { },
+    'lib/MIDI.js/MIDI/soundfont/soundfont-ogg-guitar.js');
 }());

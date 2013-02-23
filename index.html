@@ -11,6 +11,7 @@
 
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/gooole.css">
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
     <body>
@@ -19,6 +20,24 @@
         <h1>
             Welcome to GOOOLE!!
         </h1>
+
+        <div id=voteControls>
+            <div id=whatToDo>
+                Vote for time signature, bpm and length in measure.
+            </div>
+
+            <span id=voteLabels>
+                Time Signature: <br>
+                BPM: <br>
+                Length in measures: <br>
+            </span>
+
+            <span id=voteInputs>
+                <input type=number maxlength=1>/<input type=number maxlength=1><br>
+                <input type=number maxlength=3><br>
+                <input type=number maxlength=3>
+            </span>
+        </div>
 
         <script src="lib/MIDI.js/inc/base64binary.js"></script>
         <script src="lib/MIDI.js/build/MIDI.min.js"></script>

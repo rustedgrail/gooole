@@ -43,6 +43,35 @@
         <span id=possibleVotes>
         </span>
 
+        <span id=rightBar>
+            <input id=beginnerMode type=checkbox>Beginner Mode<br>
+
+            <select id=rootNote>
+                <option value=12>C
+                <option value=14>D
+                <option value=16>E
+                <option value=17>F
+                <option value=19>G
+                <option value=21>A
+                <option value=22>B
+            </select>
+
+            <select id=modeSelect>
+                <option value=1>Major</option>
+                <option value=0>Minor</option>
+            </select><br>
+
+            Octave: <select id=octave>
+                <option value='-1'>-1</option>
+                <option value=0>0</option>
+                <option value=1>1</option>
+                <option value=2>2</option>
+                <option value=3>3</option>
+                <option value=4>4</option>
+                <option value=5>5</option>
+            </select>
+        </span>
+
         <script type="text/x-handlebars-template" id=songInfoTemplate>
             <span id=songInfo>
                 You are playing {{measures}} measures of {{instrument}} in {{timeSig}} time at {{bpm}} bpm.
@@ -50,7 +79,9 @@
         </script>
 
         <script type="text/x-handlebars-template" id=songVoteTemplate>
-            <span id=
+            <div>Time Signature: {{timeSig}}</div>
+            <div>BPM: {{bpm}}</div>
+            <div>Length: {{measures}}</div>
         </script>
 
         <script src="https://raw.github.com/wycats/handlebars.js/1.0.0-rc.3/dist/handlebars.js"></script>

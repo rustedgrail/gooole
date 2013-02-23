@@ -1,3 +1,13 @@
+#rightBar {
+    float: right;
+    height: 100%;
+    padding-right: 50px;
+}
+
+#rightBar select {
+    margin: 10px 0;
+}
+
 #voteInputs input {
     width: 50px;
 }

@@ -81,9 +81,12 @@
         </script>
 
         <script type="text/x-handlebars-template" id=songVoteTemplate>
-            <div>Time Signature: {{timeSig}}</div>
-            <div>BPM: {{bpm}}</div>
-            <div>Length: {{measures}}</div>
+			{{#each config}}
+			<input type=radio value="{{this.ws_id}}">
+            <div>Time Signature: {{this.timesigunder}}/{{this.timesigover}}</div>
+            <div>BPM: {{this.bpm}}</div>
+            <div>Length: {{this.measures}}</div>
+			{{/each}}
         </script>
 
         <script src="https://raw.github.com/wycats/handlebars.js/1.0.0-rc.3/dist/handlebars.js"></script>

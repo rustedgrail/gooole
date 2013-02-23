@@ -1,6 +1,6 @@
 (function() {
-    MIDI.loadPlugin(function() { }, 'lib/MIDI.js/MIDI/soundfont/soundfont-ogg-guitar.js');
     var songInfoTemplate = Handlebars.compile(document.getElementById('songInfoTemplate').innerHTML);
+    var songInfoVote = Handlebars.compile(document.getElementById('songInfoTemplate').innerHTML);
 
     var songInfo = {
         measures: 8
@@ -8,6 +8,33 @@
         , timeSig: '7/8'
         , bpm: 246
     };
+
+    document.getElementById('rightBar').addEventListener('click', function() {
+        var keys, beginnerMode = document.getElementById('beginnerMode').checked;
+        var rootNote = (+ document.getElementById('rootNote').selectedvalue);
+        var majorKey = !!document.getElementById('modeSelect').selectedValue;
+        var octaveOffset = 12 * document.getElementById('octave').selectedValue;
+
+        if (beginnerMode) {
+            keys = [65, 83, 68, 70, 71, 72, 74, 75];
+            if (majorKey) {
+                notes = [0, 2, 4, 5, 7, 9, 11, 12];
+            }
+            else {
+                notes = [0, 2, 3, 5, 7, 8, 10, 12];
+            }
+        }
+        else {
+            keys = [65, 87, 83, 69, 68, 70, 84, 71, 89, 72, 85, 74, 75];
+        }
+
+        keyToNote = {};
+
+        keys.forEach(function(key, index) {
+            var offset = beginnerMode ? notes[index] : index
+            keyToNote[key] = rootNote + offset + octaveOffset;
+        });
+    });
 
     if (false) {
         document.getElementById('voteControls').innerHTML = songInfoTemplate(songInfo);
@@ -31,7 +58,6 @@
 
     var playing = {};
 
-    document.getElementById('submitKeyChange').addEventListener('click', updateNotes);
     document.body.addEventListener('keydown', function(e) {
         if (!playing[e.which]) {
             MIDI.noteOn(0, keyToNote[e.which], 127, 0);
@@ -44,57 +70,38 @@
         playing[e.which] = false;
     });
 
+    MIDI.loadPlugin(function() { },
+    'lib/MIDI.js/MIDI/soundfont/soundfont-ogg-guitar.js');
+    
     var submit = document.getElementById('submitVote');
-    console.log(submit);
     submit.addEventListener('click', function(e) {
         socks.publish({
             timesigover: document.getElementById('timesigover').value,
             timesigunder: document.getElementById('timesigunder').value,
             bpm: document.getElementById('bpm').value,
             measurelen: document.getElementById('measurelen').value
+        }, function(data){ 
+            document.getElementById('possibleVotes').innerHTML = songInfoVote(data);
         })
     });
-
-    function updateNotes() {
-        var keys, beginnerMode = document.getElementById('beginnerMode').checked;
-        var rootNote = (+ document.getElementById('rootNote').value);
-        var majorKey = !!document.getElementById('modeSelect').value;
-        var octaveOffset = 12 * document.getElementById('octave').value;
-
-        if (beginnerMode) {
-            keys = [65, 83, 68, 70, 71, 72, 74, 75];
-            if (majorKey) {
-                notes = [0, 2, 4, 5, 7, 9, 11, 12];
-            }
-            else {
-                notes = [0, 2, 3, 5, 7, 8, 10, 12];
-            }
-        }
-        else {
-            keys = [65, 87, 83, 69, 68, 70, 84, 71, 89, 72, 85, 74, 75];
-        }
-
-        keyToNote = {};
-
-        keys.forEach(function(key, index) {
-            var offset = beginnerMode ? notes[index] : index
-            keyToNote[key] = rootNote + offset + octaveOffset;
-        });
-    }
 }());
 
 function socketTown() {
     function init() {
-        var host = '192.168.1.157';
+        var host = 'localhost';
         var port = '8888';
         var uri = '';
 
         ws = new WebSocket("ws://" + host + ":" + port + uri);
-        ws.onmessage = function(evt) {alert("message received: " + evt.data)};
+        ws.onmessage = function(evt) {
+            alert("message received: " + evt.data);
+            if (socks.callback) { socks.callback(JSON.parse(evt.data)); }
+        };
         ws.onclose = function(evt) { alert("Connection close"); };
     }
 
-  	function publish(message) {
+  	function publish(message, callback) {
+  	    socks.callback = callback;
 		var message = { 'event': 'publish', 'parameters': {'message': message} }
 		ws.send(JSON.stringify(message));
 	}

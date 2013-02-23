@@ -103,14 +103,13 @@
                 MIDI.noteOn(note.channel, note.note, note.velocity, note.delay);
             }
             else {
-
                 MIDI.noteOff(note.channel, note.note, note.delay);
             }
         });
     }
 
     function sendRecording() {
-        socks.publish({ data: notesPlayed }, alert);
+        socks.publish(notesPlayed, alert);
     }
 
     function updateNotes() {

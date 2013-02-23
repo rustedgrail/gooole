@@ -28,8 +28,9 @@
         , 75: 36 //K, C2 
     };
 
-    var notesPlayed = [], startTime = new Date().getTime(), playing = {};
+    var pubs = {}, notesPlayed = [], startTime = new Date().getTime(), playing = {};
 
+    document.getElementById('possibleVotes').addEventListener('click', playRecording);
     document.getElementById('submitKeyChange').addEventListener('click', updateNotes);
     document.getElementById('startPlaying').addEventListener('click', startPlaying);
     document.getElementById('playback').addEventListener('click', playback);
@@ -98,6 +99,13 @@
         playbackAnyTrack(notesPlayed);
     }
 
+    function playRecording(e) {
+        var target = e.target;
+        if (target.getAttribute('data-event')) {
+            playbackAnyTrack(pubs[target.getAttribute('data-wsId')]);
+        }
+    }
+
     function playbackAnyTrack(notesPlayed) {
         notesPlayed.forEach(function(note) {
             console.log(note);
@@ -115,7 +123,7 @@
     }
 
     function startVoteOnMusic(data) {
-        var pubs = data.publication;
+        pubs = data.publication;
         var span = document.getElementById('possibleVotes');
         span.innerHTML = '';
         for (key in pubs) {

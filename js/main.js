@@ -1,4 +1,6 @@
 (function() {
+    MIDI.loadPlugin(function() {}, 'lib/MIDI.js/MIDI/soundfont/soundfont-ogg-guitar.js');
+
     var songInfoTemplate = Handlebars.compile(document.getElementById('songInfoTemplate').innerHTML);
     var songInfoVote = Handlebars.compile(document.getElementById('songInfoTemplate').innerHTML);
 
@@ -33,6 +35,7 @@
 
     document.getElementById('submitKeyChange').addEventListener('click', updateNotes);
     document.getElementById('startPlaying').addEventListener('click', startPlaying);
+    document.getElementById('playback').addEventListener('click', playback);
     document.getElementById('sendRecording').addEventListener('click', sendRecording);
     document.body.addEventListener('keydown', function(e) {
         if (!playing[e.which]) {
@@ -43,7 +46,7 @@
                 , channel: 0
                 , note: keyToNote[e.which]
                 , velocity: 127
-                , delay: new Date().getTime() - startTime
+                , delay: (new Date().getTime() - startTime) / 1000
             });
         }
     });
@@ -55,13 +58,10 @@
             on: false
             , channel: 0
             , note: keyToNote[e.which]
-            , delay: new Date().getTime() - startTime
+            , delay: (new Date().getTime() - startTime) / 1000
         });
     });
 
-    MIDI.loadPlugin(function() { },
-    'lib/MIDI.js/MIDI/soundfont/soundfont-ogg-guitar.js');
-    
     var submit = document.getElementById('submitVote');
     submit.addEventListener('click', function(e) {
         socks.publish({
@@ -77,6 +77,19 @@
     function startPlaying() {
         notesPlayed = [];
         startTime = new Date().getTime();
+    }
+
+    function playback() {
+        notesPlayed.forEach(function(note) {
+            console.log(note);
+            if (note.on) {
+                MIDI.noteOn(note.channel, note.note, note.velocity, note.delay);
+            }
+            else {
+
+                MIDI.noteOff(note.channel, note.note, note.delay);
+            }
+        });
     }
 
     function sendRecording() {

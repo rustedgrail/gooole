@@ -48,7 +48,6 @@
     var submit = document.getElementById('submitVote');
     console.log(submit);
     submit.addEventListener('click', function(e) {
-        console.log('howdy doodie');
         socks.publish({
             timesigover: document.getElementById('timesigover').value,
             timesigunder: document.getElementById('timesigunder').value,
@@ -78,7 +77,7 @@ function socketTown() {
 	return {
 	    init: init,
 	    publish: publish,
-	    close: close
+	    close: close_conn
 	}
 }
 socks = socketTown();

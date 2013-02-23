@@ -71,8 +71,9 @@
             measurelen: document.getElementById('measurelen').value
         }, function(data){
             document.getElementById('possibleVotes').innerHTML = '';
-            for (var i=0 ; i < data.publication.length; ++i) {
-                document.getElementById('possibleVotes').innerHTML += songInfoVote(data.publication[i]);
+            for (pub in data.publication) {
+                data.publication[pub].ws_id = pub;
+                document.getElementById('possibleVotes').innerHTML += songInfoVote(data.publication[pub]);
             }
             configVoteSubmit();
         });

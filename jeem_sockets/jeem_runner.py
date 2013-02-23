@@ -45,11 +45,9 @@ class JeemEvents(object):
         if ws_count == publish_count: self.vote()
 
     def vote(self):
-        vote_on = []
+        vote_on = {}
         for ws_id in jeem.clients: 
-            publication = jeem.clients[ws_id].publication
-            publication['ws_id'] = ws_id
-            vote_on.append(publication)
+            vote_on[ws_id] = jeem.clients[ws_id].publication
 
         for ws_id in jeem.clients: 
             jeem.clients[ws_id].write_message(simplejson.dumps({'publication': vote_on}))

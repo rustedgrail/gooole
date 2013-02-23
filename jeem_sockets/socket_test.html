@@ -9,9 +9,9 @@
       ws.onmessage = function(evt) {alert("message received: " + evt.data)};
       ws.onclose = function(evt) { alert("Connection close"); };
 
-	  	function send_vote() {
-			var v = document.getElementById('vote_string');
-			var message = { 'event': 'vote', 'parameters': {'message': v.value} }
+	  	function publish() {
+			var v = document.getElementById('publish_string');
+			var message = { 'event': 'publish', 'parameters': {'message': v.value} }
 			alert('sending '+JSON.stringify(message));
 			ws.send(JSON.stringify(message));
 		}
@@ -21,8 +21,8 @@
   </head>
 
 	<body>
-		<input type='text' value='' id='vote_string' />
-		<input type='button' value='vote' name='vote' id='vote' onclick='send_vote();'/>
+		<input type='text' value='' id='publish_string' />
+		<input type='button' value='publish' name='publish' id='publish' onclick='publish();'/>
 		
 		<input type='button' value='close' name='close' id='close' onclick='close_conn();'/>
 	</body>

@@ -45,3 +45,29 @@
     MIDI.loadPlugin(function() { },
     'lib/MIDI.js/MIDI/soundfont/soundfont-ogg-guitar.js');
 }());
+
+function socketTown() {
+    function init() {        
+        var host = '192.168.1.157';
+        var port = '8888';
+        var uri = '';
+
+        ws = new WebSocket("ws://" + host + ":" + port + uri);
+        ws.onmessage = function(evt) {alert("message received: " + evt.data)};
+        ws.onclose = function(evt) { alert("Connection close"); };
+    }
+
+  	function publish(message) {
+		var message = { 'event': 'publish', 'parameters': {'message': message} }
+		ws.send(JSON.stringify(message));
+	}
+	function close_conn() { ws.close(); }
+	
+	return {
+	    init: init,
+	    publish: publish,
+	    close: close
+	}
+}
+x = socketTown();
+x.init();

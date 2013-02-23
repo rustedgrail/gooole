@@ -5,6 +5,7 @@ class WSHandler(tornado.websocket.WebSocketHandler):
     
     def open(self):
         self.id = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(6))
+        self.publication = None
         print 'new connection added %s' % (self.id)
 
         jeem.clients[self.id] = self
@@ -23,28 +24,38 @@ class WSHandler(tornado.websocket.WebSocketHandler):
         del jeem.clients[self.id]
     
 class Jeem(object):
-    def __init__(self): 
-        self.round = 0
-        self.bpm = ''
-        self.time_sig = ''
-        self.clients = {}
     
+    def __init__(self): 
+        # self.round = 0
+        # self.bpm = ''
+        # self.time_sig = ''
+        self.clients = {}
+
 class JeemEvents(object):
     
-    def vote(self, ws, message):
-        print 'vote action from %s: %s' % (ws.id, message)
+    def publish(self, ws, message):
+        print 'publish action from %s: %s' % (ws.id, message)
+        ws.publication = message
+        
+        ws_count = 0
+        publish_count = 0
         for ws_id in jeem.clients:
-            if ws_id == ws.id: continue
-            jeem.clients[ws_id].write_message(message)
+            if jeem.clients[ws_id].publication: publish_count+=1
+            ws_count+=1
+        if ws_count == publish_count: self.vote()
 
-    # def publish(self, ws, data):
+    def vote(self):
+        for sendr in jeem.clients:
+            for recvr in jeem.clients:
+                if jeem.clients[sendr].id == jeem.clients[recvr].id: continue
+                vote_on = {'publication': jeem.clients[sendr].publication}
+                jeem.clients[recvr].write_message(simplejson.dumps(vote_on))
 
 class JeemDispatcher(object):
     
     def __init__(self): 
         self.events = { 
-            'vote': JeemEvents().vote
-            # , 'publish': JeemEvents().publish
+            'publish': JeemEvents().publish
         }
 
 jeem = Jeem()

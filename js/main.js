@@ -8,7 +8,7 @@
         , bpm: 246
     };
 
-    if (true) {
+    if (false) {
         document.getElementById('voteControls').innerHTML = songInfoTemplate(songInfo);
     }
 
@@ -44,6 +44,18 @@
 
     MIDI.loadPlugin(function() { },
     'lib/MIDI.js/MIDI/soundfont/soundfont-ogg-guitar.js');
+    
+    var submit = document.getElementById('submitVote');
+    console.log(submit);
+    submit.addEventListener('click', function(e) {
+        console.log('howdy doodie');
+        socks.publish({
+            timesigover: document.getElementById('timesigover').value,
+            timesigunder: document.getElementById('timesigunder').value,
+            bpm: document.getElementById('bpm').value,
+            measurelen: document.getElementById('measurelen').value
+        })
+    });
 }());
 
 function socketTown() {
@@ -69,5 +81,5 @@ function socketTown() {
 	    close: close
 	}
 }
-x = socketTown();
-x.init();
+socks = socketTown();
+socks.init();

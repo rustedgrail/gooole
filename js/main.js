@@ -1,13 +1,12 @@
 (function() {
     MIDI.loadPlugin(function() {}, 'lib/MIDI.js/MIDI/soundfont/soundfont-ogg-guitar.js');
 
-    var songInfoTemplate = Handlebars.compile(document.getElementById('songInfoTemplate').innerHTML);
     var songInfoVote = Handlebars.compile(document.getElementById('songVoteTemplate').innerHTML);
     var recordingVote = Handlebars.compile(document.getElementById('recordingVoteTemplate').innerHTML);
+    var currentTrack = Handlebars.compile(document.getElementById('currentTrackTemplate').innerHTML);
 
     var songInfo = {
         measures: 8
-        , instrument: 'spoons'
         , timeSig: '7/8'
         , bpm: 246
     };
@@ -28,9 +27,10 @@
         , 75: 36 //K, C2 
     };
 
-    var pubs = {}, notesPlayed = [], startTime = new Date().getTime(), playing = {};
+    var pubs = {}, notesPlayed = [], startTime = new Date().getTime(), playing = {}, currentTrack = [];
 
     document.getElementById('possibleVotes').addEventListener('click', playRecording);
+    document.getElementById('voteControls').addEventListener('click', playCurrentTrack);
     document.getElementById('submitKeyChange').addEventListener('click', updateNotes);
     document.getElementById('startPlaying').addEventListener('click', startPlaying);
     document.getElementById('playback').addEventListener('click', playback);
@@ -119,6 +119,10 @@
         });
     }
 
+    function playCurrentTrack() {
+        playbackAnyTrack(currentTrack);
+    }
+
     function sendRecording() {
         socks.publish(notesPlayed, startVoteOnMusic);
     }
@@ -130,6 +134,13 @@
         for (key in pubs) {
             span.innerHTML += recordingVote({ws_id: key});
         }
+
+        configVoteSubmit();
+    }
+
+    function renderCurrentTrackTemplate() {
+        songInfo.currentTrack = currentTrack.length
+        document.getElementById('voteControl').innerHTML = currentTrack(songInfo);
     }
 
     function updateNotes() {
@@ -175,13 +186,14 @@ function socketTown() {
     }
 
     function vote(message) {
+        socks.callback = null;
 		var message = { 'event': 'vote', 'parameters': {'message': message} }
 		ws.send(JSON.stringify(message));
     }
 
   	function publish(message, callback) {
   	    socks.callback = callback;
-		var message = { 'event': 'publish', 'parameters': {'message': message} }
+		var message = { event: 'publish', parameters: {message: message} }
 		ws.send(JSON.stringify(message));
 	}
 	function close_conn() { ws.close(); }

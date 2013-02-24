@@ -86,12 +86,6 @@
             <input type=button id=submitKeyChange value="Change Keys">
         </span>
 
-        <script type="text/x-handlebars-template" id=songInfoTemplate>
-            <span id=songInfo>
-                You are playing {{measures}} measures of {{instrument}} in {{timeSig}} time at {{bpm}} bpm.
-            </span>
-        </script>
-
         <script type="text/x-handlebars-template" id=songVoteTemplate>
 			<input type=radio value={{ws_id}}>
             <span>Time Signature: {{timesigover}}/{{timesigunder}}</span>
@@ -101,7 +95,16 @@
 
         <script type="text/x-handlebars-template" id=recordingVoteTemplate>
             <input type=button data-event=playRecording data-wsId={{ws_id}} value="Play {{ws_id}}">
-            <input type=radio data-wsId={{ws_id}} name=recordingVote>
+            <input type=radio value={{ws_id}} name=recordingVote>
+        </script>
+
+        <script type="text/x-handlebars-template" id=currentTrackTemplate>
+            <span>
+                You are playing {{measures}} of {{timeSig}} time at {{bpm}} bpm.
+            </span>
+            {{#if currentTrack}}
+                <input id=playbackTrack type=button data-event=playTrack value="Play current track">
+            {{/if}}
         </script>
 
         <script src="https://raw.github.com/wycats/handlebars.js/1.0.0-rc.3/dist/handlebars.js"></script>

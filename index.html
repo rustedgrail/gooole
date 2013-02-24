@@ -98,8 +98,10 @@
         </script>
 
         <script type="text/x-handlebars-template" id=recordingVoteTemplate>
-            <input type=button data-event=playRecording data-wsId={{ws_id}} value="Play {{ws_id}}">
-            <input type=radio value={{ws_id}} name=recordingVote>
+            <div>
+                <input type=button data-event=playRecording data-wsId={{ws_id}} value="Play {{ws_id}}">
+                <input type=radio value={{ws_id}} name=recordingVote>
+            </div>
         </script>
 
         <script type="text/x-handlebars-template" id=currentTrackTemplate>

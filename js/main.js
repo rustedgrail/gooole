@@ -144,7 +144,11 @@
             span.innerHTML += recordingVote({ws_id: key});
         }
 
-        configVoteSubmit();
+        configVoteSubmit(function(data) {
+            var winning_ws = data.publication.winner;
+            currentTrack = currentTrack.concat(pubs[winning_ws]);
+            renderCurrentTrackTemplate();
+        });
     }
 
     function renderCurrentTrackTemplate() {

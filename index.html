@@ -100,7 +100,7 @@
 
         <script type="text/x-handlebars-template" id=currentTrackTemplate>
             <span>
-                You are playing {{measures}} of {{timeSig}} time at {{bpm}} bpm.
+                You are playing {{measureslen}} of {{timesigover}}/{{timesigunder}} time at {{bpm}} bpm.
             </span>
             {{#if currentTrack}}
                 <input id=playbackTrack type=button data-event=playTrack value="Play current track">

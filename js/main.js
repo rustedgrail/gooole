@@ -6,8 +6,9 @@
     var currentTrack = Handlebars.compile(document.getElementById('currentTrackTemplate').innerHTML);
 
     var songInfo = {
-        measures: 8
-        , timeSig: '7/8'
+        measureslen: 8
+        , timesigover: 7
+        , timesigunder: 8
         , bpm: 246
     };
 

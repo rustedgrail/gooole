@@ -46,12 +46,15 @@ class JeemEvents(object):
         if jeem.client_count == publish_count: self.broadcast()
     
     def vote(self, ws, message):
+
+        ballot_count = 0
         ws_id_ballot = message
-        if jeem.votes.get(ws_id_ballot): self.votes[ws_id_ballot]+=1
+        if jeem.votes.get(ws_id_ballot): jeem.votes[ws_id_ballot]+=1
         else: jeem.votes[ws_id_ballot] = 1
         
-        ballot_count = 0
-        for ws_id in jeem.votes: ballot_count+=1
+        for ws_id in jeem.votes: ballot_count+=jeem.votes[ws_id]
+        print ballot_count, jeem.client_count
+        
         if ballot_count == jeem.client_count:
             vote_count = 0
             winner = ws.id # shady default

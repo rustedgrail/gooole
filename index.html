@@ -87,10 +87,14 @@
         </span>
 
         <script type="text/x-handlebars-template" id=songVoteTemplate>
-			<input type=radio value={{ws_id}}>
-            <span>Time Signature: {{timesigover}}/{{timesigunder}}</span>
-            <span>BPM: {{bpm}}</span>
-            <span>Length: {{measurelen}}</span>
+            <div>
+                <input id=songInfo_{{ws_id}} type=radio value={{ws_id}}>
+                <label for=songInfo_{{ws_id}}>
+                    Time Signature: {{timesigover}}/{{timesigunder}}
+                    BPM: {{bpm}}
+                    Length: {{measurelen}}
+                </label>
+            </div>
         </script>
 
         <script type="text/x-handlebars-template" id=recordingVoteTemplate>
@@ -100,7 +104,7 @@
 
         <script type="text/x-handlebars-template" id=currentTrackTemplate>
             <span>
-                You are playing {{measurelen}} of {{timesigover}}/{{timesigunder}} time at {{bpm}} bpm.
+                You are playing {{measurelen}} bars of {{timesigover}}/{{timesigunder}} time at {{bpm}} bpm.
             </span>
             {{#if currentTrack}}
                 <input id=playbackTrack type=button data-event=playTrack value="Play current track">

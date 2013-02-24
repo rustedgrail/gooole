@@ -186,7 +186,7 @@
 
 function socketTown() {
     function init() {
-        var host = '192.168.1.157';
+        var host = 'localhost';
         var port = '8888';
         var uri = '';
 

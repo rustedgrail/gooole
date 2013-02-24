@@ -61,6 +61,7 @@
         });
     });
 
+    var votedConfs = {};
     var confSubmit = document.getElementById('submitVote');
     confSubmit.addEventListener('click', function(e) {
         socks.publish({
@@ -70,22 +71,28 @@
             measurelen: document.getElementById('measurelen').value
         }, function(data){
             document.getElementById('possibleVotes').innerHTML = '';
+            votedConfs = data.publication;
             for (pub in data.publication) {
                 data.publication[pub].ws_id = pub;
                 document.getElementById('possibleVotes').innerHTML += songInfoVote(data.publication[pub]);
             }
-            configVoteSubmit();
+        });
+        
+        configVoteSubmit(function(data) {
+            var winning_ws = data.publication.winner;
+            console.log('winning object!');
+            console.log(votedConfs[winning_ws]);
         });
     });
 
-    function configVoteSubmit() {
+    function configVoteSubmit(callback) {
         var submitConfigVote = document.getElementById('submitConfigVote');
         submitConfigVote.addEventListener('click', function(e) {
             var possible_votes = document.getElementById('possibleVotes');
             var radios = possible_votes.getElementsByTagName('input');
             for (var i=0; i < radios.length; ++i) {
                 if (radios[i].checked === true) {
-                    socks.vote(radios[i].value, function(data) {});
+                    socks.vote(radios[i].value, callback);
                     break;
                 }
             }
@@ -186,8 +193,8 @@ function socketTown() {
         ws.onclose = function(evt) { alert("Connection close"); };
     }
 
-    function vote(message) {
-        socks.callback = null;
+    function vote(message, callback) {
+        socks.callback = callback;
 		var message = { 'event': 'vote', 'parameters': {'message': message} }
 		ws.send(JSON.stringify(message));
     }

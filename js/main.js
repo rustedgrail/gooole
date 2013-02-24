@@ -3,7 +3,7 @@
 
     var songInfoVote = Handlebars.compile(document.getElementById('songVoteTemplate').innerHTML);
     var recordingVote = Handlebars.compile(document.getElementById('recordingVoteTemplate').innerHTML);
-    var currentTrack = Handlebars.compile(document.getElementById('currentTrackTemplate').innerHTML);
+    var currentTrackTempl = Handlebars.compile(document.getElementById('currentTrackTemplate').innerHTML);
 
     var songInfo = {
         measureslen: 8
@@ -148,7 +148,7 @@
 
     function renderCurrentTrackTemplate() {
         songInfo.currentTrack = currentTrack.length
-        document.getElementById('voteControl').innerHTML = currentTrack(songInfo);
+        document.getElementById('voteControl').innerHTML = currentTrackTempl(songInfo);
     }
 
     function updateNotes() {

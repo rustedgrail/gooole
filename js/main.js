@@ -80,8 +80,9 @@
         
         configVoteSubmit(function(data) {
             var winning_ws = data.publication.winner;
-            console.log('winning object!');
-            console.log(votedConfs[winning_ws]);
+            songInfo = votedConfs[winning_ws];
+            renderCurrentTrackTemplate();
+            document.getElementById('possibleVotes').innerHTML = '';
         });
     });
 
@@ -148,7 +149,7 @@
 
     function renderCurrentTrackTemplate() {
         songInfo.currentTrack = currentTrack.length
-        document.getElementById('voteControl').innerHTML = currentTrackTempl(songInfo);
+        document.getElementById('voteControls').innerHTML = currentTrackTempl(songInfo);
     }
 
     function updateNotes() {

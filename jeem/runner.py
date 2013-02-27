@@ -1,41 +1,18 @@
-import tornado.websocket
-import random, simplejson, string, traceback
+import simplejson
 
-class WSHandler(tornado.websocket.WebSocketHandler):
+class JeemDispatcher(object):
+
+    def __init__(self):
+        self.public_events = {'vote': self.vote, 'publish': self.publish}
     
-    def open(self):
-        self.id = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(6))
-        self.publication = None
-        # print 'new connection added %s' % (self.id)
-
+    def add_client(self, ws):
         jeem.client_count+=1
-        jeem.clients[self.id] = self
-        self.write_message("Hello %s" % (self.id))
-      
-    def on_message(self, message):
-        # print 'message received %s from %s' % (message, self.id)
-        message_obj = simplejson.loads(message)
+        jeem.clients[ws.id] = ws
 
-        event = message_obj.get('event')
-        parameters = message_obj.get('parameters')
-        jd.events[event](self, **parameters)
-
-    def on_close(self):
-        # print 'closing %s connection' % (self.id)
+    def remove_client(self, ws):
         del jeem.clients[self.id]
         jeem.client_count-=1
-    
-class Jeem(object):
-    
-    def __init__(self):
-        self.clients = {}
-        self.votes = {}
-        self.client_count = 0
-    
-    def reset_votes(self): self.votes = {}
 
-class JeemEvents(object):
-    
     def publish(self, ws, message):
         # print 'publish action from %s: %s' % (ws.id, message)
         ws.publication = message
@@ -74,13 +51,13 @@ class JeemEvents(object):
         for ws_id in jeem.clients:
             jeem.clients[ws_id].write_message(simplejson.dumps({'publication': data}))
 
-class JeemDispatcher(object):
-    
-    def __init__(self): 
-        self.events = { 
-            'vote': JeemEvents().vote
-            , 'publish': JeemEvents().publish
-        }
+class Jeem(object):
 
+    def __init__(self):
+        self.clients = {}
+        self.votes = {}
+        self.client_count = 0
+    
+    def reset_votes(self): 
+        self.votes = {}
 jeem = Jeem()
-jd = JeemDispatcher()

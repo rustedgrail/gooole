@@ -64,7 +64,7 @@
     var votedConfs = {};
     var confSubmit = document.getElementById('submitVote');
     confSubmit.addEventListener('click', function(e) {
-        socks.publish({
+        socks.send('publish', {
             timesigover: document.getElementById('timesigover').value,
             timesigunder: document.getElementById('timesigunder').value,
             bpm: document.getElementById('bpm').value,
@@ -93,7 +93,7 @@
             var radios = possible_votes.getElementsByTagName('input');
             for (var i=0; i < radios.length; ++i) {
                 if (radios[i].checked === true) {
-                    socks.vote(radios[i].value, callback);
+                    socks.send('vote', radios[i].value, callback);
                     break;
                 }
             }
@@ -133,7 +133,7 @@
     }
 
     function sendRecording() {
-        socks.publish(notesPlayed, startVoteOnMusic);
+        socks.send('publish', notesPlayed, startVoteOnMusic);
     }
 
     function startVoteOnMusic(data) {
@@ -185,8 +185,11 @@
 }());
 
 function socketTown() {
+    var ws;
+    var round=0;
+
     function init() {
-        var host = '192.168.1.157';
+        var host = 'localhost';
         var port = '8888';
         var uri = '';
 
@@ -198,23 +201,17 @@ function socketTown() {
         ws.onclose = function(evt) { alert("Connection close"); };
     }
 
-    function vote(message, callback) {
+    function send(event, message, callback) {
         socks.callback = callback;
-		var message = { 'event': 'vote', 'parameters': {'message': message} }
-		ws.send(JSON.stringify(message));
+        var message = {event: event, round: round, parameters: {message: message}}
+        ws.send(JSON.stringify(message));
     }
 
-  	function publish(message, callback) {
-  	    socks.callback = callback;
-		var message = { event: 'publish', parameters: {message: message} }
-		ws.send(JSON.stringify(message));
-	}
 	function close_conn() { ws.close(); }
 	
 	return {
 	    init: init,
-	    publish: publish,
-	    vote: vote,
+	    send: send,
 	    close: close_conn
 	}
 }

@@ -20,7 +20,7 @@
             Welcome to GOOOLE!!
         </h1>
 
-        <span id=voteControls>
+        <span id=voteControls data-event=voteControls>
             <div id=whatToDo>
                 Vote for time signature, bpm and length in measure.
             </div>
@@ -37,20 +37,20 @@
                 <input type=number maxlength=3 id=measurelen>
             </span>
 
-            <input type=submit id=submitVote>
+            <input type=submit id=submitVote data-event=submitVote>
         </span>
 
         <span id=voteContainer>
-            <span id=possibleVotes>
+            <span id=possibleVotes data-event=playRecording>
             </span>
-            <input type=submit value=Vote id=submitConfigVote>
+            <input type=submit value=Vote id=submitConfigVote data-event=submitConfigVote>
         </span>
 
         <span id=rightBar>
             <div class="recordingControls padding">
-                <input type=button value="Start Recording" id=startPlaying><br>
-                <input type=button value="Play Recording" id=playback><br>
-                <input type=button value="Send Recording" id=sendRecording>
+                <input type=button value="Start Recording" id=startPlaying data-event=startPlaying><br>
+                <input type=button value="Play Recording" id=playback data-event=playback><br>
+                <input type=button value="Send Recording" id=sendRecording data-event=sendRecording>
             </div>
             <div class=padding>
                 <input id=beginnerMode type=checkbox>Beginner Mode
@@ -83,7 +83,7 @@
                 </select>
             </div>
 
-            <input type=button id=submitKeyChange value="Change Keys">
+            <input type=button id=submitKeyChange value="Change Keys" data-event=submitKeyChange>
         </span>
 
         <script type="text/x-handlebars-template" id=songVoteTemplate>

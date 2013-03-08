@@ -28,14 +28,25 @@
         , 75: 36 //K, C2 
     };
 
+    var events = {
+        playRecording: playRecording
+        , startPlaying: startPlaying
+        , submitKeyChange: updateNotes
+        , playback: playback
+        , sendRecording: sendRecording
+        , voteControls: playCurrentTrack
+        , submitVote: submitVote
+    };
+
     var pubs = {}, notesPlayed = [], startTime = new Date().getTime(), playing = {}, currentTrack = [];
 
-    document.getElementById('possibleVotes').addEventListener('click', playRecording);
-    document.getElementById('voteControls').addEventListener('click', playCurrentTrack);
-    document.getElementById('submitKeyChange').addEventListener('click', updateNotes);
-    document.getElementById('startPlaying').addEventListener('click', startPlaying);
-    document.getElementById('playback').addEventListener('click', playback);
-    document.getElementById('sendRecording').addEventListener('click', sendRecording);
+    document.body.addEventListener('click', function(e) {
+        var event = e.target.getAttribute('data-event');
+        if (event && typeof events[event] === 'function') {
+            events[event](e)
+        }
+    });
+
     document.body.addEventListener('keydown', function(e) {
         if (!playing[e.which]) {
             MIDI.noteOn(0, keyToNote[e.which], 127, 0);
@@ -62,8 +73,7 @@
     });
 
     var votedConfs = {};
-    var confSubmit = document.getElementById('submitVote');
-    confSubmit.addEventListener('click', function(e) {
+    function submitVote(e) {
         socks.send('publish', {
             timesigover: document.getElementById('timesigover').value,
             timesigunder: document.getElementById('timesigunder').value,
@@ -77,18 +87,17 @@
                 document.getElementById('possibleVotes').innerHTML += songInfoVote(data.publication[pub]);
             }
         });
-        
+
         configVoteSubmit(function(data) {
             var winning_ws = data.publication.winner;
             songInfo = votedConfs[winning_ws];
             renderCurrentTrackTemplate();
             document.getElementById('possibleVotes').innerHTML = '';
         });
-    });
+    }
 
     function configVoteSubmit(callback) {
-        var submitConfigVote = document.getElementById('submitConfigVote');
-        submitConfigVote.addEventListener('click', function(e) {
+        events.submitConfigVote = function(e) {
             var possible_votes = document.getElementById('possibleVotes');
             var radios = possible_votes.getElementsByTagName('input');
             for (var i=0; i < radios.length; ++i) {
@@ -97,7 +106,7 @@
                     break;
                 }
             }
-        });
+        }
     }
 
     function startPlaying() {
@@ -207,13 +216,13 @@ function socketTown() {
         ws.send(JSON.stringify(message));
     }
 
-	function close_conn() { ws.close(); }
-	
-	return {
-	    init: init,
-	    send: send,
-	    close: close_conn
-	}
+    function close_conn() { ws.close(); }
+
+    return {
+        init: init,
+        send: send,
+        close: close_conn
+    }
 }
 
 socks = socketTown();

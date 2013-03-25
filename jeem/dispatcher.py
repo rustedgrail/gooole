@@ -6,6 +6,7 @@ class Jeem(object):
         self.clients = {}
         self.votes = {}
         self.client_count = 0
+        self.round = 0
     
     def reset_votes(self): 
         self.votes = {}
@@ -17,12 +18,15 @@ class JeemDispatcher(object):
         self.jeem = Jeem()
     
     def add_client(self, ws):
+        if self.jeem.round > 0: return False
         self.jeem.client_count+=1
         self.jeem.clients[ws.id] = ws
+        return True
 
     def remove_client(self, ws):
-        del self.jeem.clients[self.id]
-        self.jeem.client_count-=1
+        if self.jeem.clients.get(ws.id): 
+            del self.jeem.clients[ws.id]
+            self.jeem.client_count-=1
 
     def publish(self, ws, message):
         # print 'publish action from %s: %s' % (ws.id, message)
@@ -31,7 +35,10 @@ class JeemDispatcher(object):
         publish_count = 0
         for ws_id in self.jeem.clients:
             if self.jeem.clients[ws_id].publication: publish_count+=1
-        if self.jeem.client_count == publish_count: self.broadcast()
+        # print publish_count, self.jeem.client_count
+        if self.jeem.client_count == publish_count: 
+            self.jeem.round+=1
+            self.broadcast()
     
     def vote(self, ws, message):
 
@@ -41,7 +48,7 @@ class JeemDispatcher(object):
         else: self.jeem.votes[ws_id_ballot] = 1
         
         for ws_id in self.jeem.votes: ballot_count+=self.jeem.votes[ws_id]
-        print ballot_count, self.jeem.client_count
+        # print ballot_count, self.jeem.client_count
         
         if ballot_count == self.jeem.client_count:
             vote_count = 0

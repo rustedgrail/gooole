@@ -4,20 +4,23 @@ import tornado.httpserver
 import tornado.ioloop
 import tornado.web
 
-from runner import *
+from dispatcher import *
 
 class WSHandler(tornado.websocket.WebSocketHandler):
 
     def open(self):
         self.id = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(6))
-        self.publication = None
-        print 'new connection added %s' % (self.id)
+        self.publication = None        
+        # print 'new connection added %s' % (self.id)
 
-        jd.add_client(self)
-        print "Hello %s" % (self.id)
+        client_added = jd.add_client(self)
+        if not client_added:
+            response = {'event': 'close', 'message': 'Game already in progress'}
+            self.write_message(simplejson.dumps(response))
+        # print "Hello %s" % (self.id)
       
     def on_message(self, message):
-        print 'message received %s from %s' % (message, self.id)
+        # print 'message received %s from %s' % (message, self.id)
         message_obj = simplejson.loads(message)
 
         event = message_obj.get('event')
@@ -25,8 +28,9 @@ class WSHandler(tornado.websocket.WebSocketHandler):
         jd.public_events[event](self, **parameters)
 
     def on_close(self):
-        print 'closing %s connection' % (self.id)
+        # print 'closing %s connection' % (self.id)
         jd.remove_client(self)
+        if jd.jeem.client_count == 0: jd.jeem.round = 0
  
 jd = JeemDispatcher()
 application = tornado.web.Application([

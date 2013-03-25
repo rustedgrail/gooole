@@ -204,8 +204,12 @@ function socketTown() {
 
         ws = new WebSocket("ws://" + host + ":" + port + uri);
         ws.onmessage = function(evt) {
-            alert("message received: " + evt.data);
-            if (socks.callback) { socks.callback(JSON.parse(evt.data)); }
+            data = JSON.parse(evt.data);
+            if (socks.callback) { socks.callback(data); }
+            else if (data.event == 'close') {
+                document.getElementsByTagName('body')[0].innerHTML = data.message;
+                ws.close();
+            }
         };
         ws.onclose = function(evt) { alert("Connection close"); };
     }

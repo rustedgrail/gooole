@@ -36,17 +36,17 @@
                 <input type=number maxlength=3 id=bpm><br>
                 <input type=number maxlength=3 id=measurelen>
             </span>
-
             <input type=submit id=submitVote data-event=submitVote>
         </span>
 
         <span id=voteContainer>
             <span id=possibleVotes data-event=playRecording>
             </span>
-            <input type=submit value=Vote id=submitConfigVote data-event=submitConfigVote>
         </span>
 
         <span id=rightBar>
+			<div id=gameStats></div>
+			
             <div class="recordingControls padding">
                 <input type=button value="Start Recording" id=startPlaying data-event=startPlaying><br>
                 <input type=button value="Play Recording" id=playback data-event=playback><br>
@@ -86,6 +86,12 @@
             <input type=button id=submitKeyChange value="Change Keys" data-event=submitKeyChange>
         </span>
 
+        <script type="text/x-handlebars-template" id=gameStatsTemplate>
+			<div class=players>Players: {{ clients }}</div>
+			<div class=round>Round: {{ round }}</div>
+			<div class=votes>Votes remaining: {{ votes_remaining }}</div>
+		</script>
+
         <script type="text/x-handlebars-template" id=songVoteTemplate>
             <div>
                 <input id=songInfo_{{ws_id}} type=radio value={{ws_id}}>
@@ -94,6 +100,7 @@
                     BPM: {{bpm}}
                     Length: {{measurelen}}
                 </label>
+	            <input type=submit value=Vote id=submitConfigVote data-event=submitConfigVote>
             </div>
         </script>
 
@@ -101,6 +108,7 @@
             <div>
                 <input type=button data-event=playRecording data-wsId={{ws_id}} value="Play {{ws_id}}">
                 <input type=radio value={{ws_id}} name=recordingVote>
+	            <input type=submit value=Vote id=submitConfigVote data-event=submitConfigVote>
             </div>
         </script>
 

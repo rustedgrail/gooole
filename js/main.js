@@ -134,17 +134,46 @@
     window.startPlaying = startPlaying;
     function startPlaying() {
         document.getElementById('countdownVideo').style.display = 'none';
+        if (document.getElementById('metronome').checked) {
+            try {
+                createMetronome();
+            }
+            catch (e) {
+                alert('Your browser does now support web audio');
+            }
+        }
+        initializeRecording();
+    }
+
+    function initializeRecording() {
+        currentlyRecording = true;
         notesPlayed = [];
         startTime = new Date().getTime();
-        currentlyRecording = true;
-        var trackLength = songInfo.measurelen * songInfo.timesigover / songInfo.bpm;
-        trackLength = trackLength * 60 * 1000;
+
+        var numBeats = songInfo.measurelen * songInfo.timesigover
+        var trackLength = numBeats  / songInfo.bpm * 60 * 1000;
         var recording = document.getElementById('recordingCircle');
         recording.style.display = 'inline-block';
+
         setTimeout(function() {
             recording.style.display = 'none';
             currentlyRecording = false;
         }, trackLength);
+    }
+
+    function createMetronome(numBeats) {
+        var i, offset, osc, audio = new webkitAudioContext()
+        var secsPerBeat = (1 / (songInfo.bpm / 60));
+        var numBeats = songInfo.measurelen * songInfo.timesigover
+
+        for(i = 0; numBeats > i; i++) {
+            offset = (i * secsPerBeat);
+            osc = audio.createOscillator();
+            osc.connect(audio.destination);
+            osc.frequency.value = 440.0;
+            osc.noteOn(audio.currentTime + offset);
+            osc.noteOff(audio.currentTime + offset + .05);
+        }
     }
 
     function playback() {

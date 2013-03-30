@@ -7,10 +7,12 @@ class Jeem(object):
         self.votes = {}
         self.client_count = 0
         self.round = 0
-    
-    def reset_votes(self): 
-        self.votes = {}
 
+    def next_round(self):
+	self.round+=1
+	self.votes = {}
+	for ws in self.clients: self.clients[ws].publication = None
+    
 class JeemDispatcher(object):
 
     def __init__(self):
@@ -22,7 +24,7 @@ class JeemDispatcher(object):
 	self.broadcast(publication)
 
     def next_round(self):
-	self.jeem.round+=1
+	self.jeem.next_round()
 	publication = {'event': 'next_round', 'params': self.jeem.round}
 	self.broadcast(publication)
 
@@ -40,19 +42,20 @@ class JeemDispatcher(object):
 	    self.update_client_count()
 
     def publish(self, ws, message):
-        # print 'publish action from %s: %s' % (ws.id, message)
+        print 'publish action from %s: %s' % (ws.id, message)
         ws.publication = message
         
         publish_count = 0
         for ws_id in self.jeem.clients:
-            if self.jeem.clients[ws_id].publication: publish_count+=1
-        # print publish_count, self.jeem.client_count
+            if self.jeem.clients[ws_id].publication:
+		publish_count+=1
+	
+	publication = {'event': 'submission', 'params': publish_count}
+	self.broadcast(publication)
+        
+	print publish_count, self.jeem.client_count
         if self.jeem.client_count == publish_count: 
-            self.jeem.round+=1
             self.broadcast()
-	else:
-	    publication = {'event': 'submission', 'params': publish_count}
-	    self.broadcast(publication)
     
     def vote(self, ws, message):
 
@@ -72,7 +75,6 @@ class JeemDispatcher(object):
                     winner = ws_id
                     vote_count = self.jeem.votes[ws_id]
             self.broadcast({'winner': winner})
-            self.jeem.reset_votes()
 	    self.next_round()
 	else:
 	    publication = {'event': 'vote_cast', 'params': ballot_count}

@@ -39,7 +39,7 @@
         , submitKeyChange: updateNotes
         , playback: playback
         , sendRecording: sendRecording
-        , voteControls: playCurrentTrack
+        , playCurrentTrack: playCurrentTrack
         , submitVote: submitVote
     };
 

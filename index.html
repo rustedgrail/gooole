@@ -51,8 +51,6 @@
         </span>
 
         <span id=rightBar class="pull-right span3">
-			<div id=gameStats></div>
-			
             <div class="recordingControls padding">
                 <input type=button value="Start Recording" id=startPlaying data-event=startPlaying><br>
                 <input type=button value="Play Recording" id=playback data-event=playback><br>
@@ -117,7 +115,7 @@
                 You are playing {{measurelen}} bars of {{timesigover}}/{{timesigunder}} time at {{bpm}} bpm.
             </span>
             {{#if currentTrack}}
-                <input id=playbackTrack type=button data-event=playTrack value="Play current track">
+                <input id=playbackTrack type=button data-event=playCurrentTrack value="Play current track">
             {{/if}}
         </script>
 

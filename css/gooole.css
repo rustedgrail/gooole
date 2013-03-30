@@ -6,6 +6,11 @@ body {
     width: 75px;
 }
 
+#rightBar label {
+    display: inline-block;
+    vertical-align: sub;
+}
+
 #voteContainer video {
     width: 35%;
     display: none;

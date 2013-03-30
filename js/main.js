@@ -92,6 +92,7 @@
     function startCountdown() {
             var video = document.getElementById('countdownVideo');
             video.load();
+            video.playbackRate = songInfo.bpm / 60;
             video.style.display = 'inline';
             video.play();
         }

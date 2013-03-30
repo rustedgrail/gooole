@@ -2,6 +2,11 @@ body {
     background-color: #590;
 }
 
+.header {
+    width: 35%;
+    margin: 0 auto;
+}
+
 #rightBar select {
     width: 75px;
 }

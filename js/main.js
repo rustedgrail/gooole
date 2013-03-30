@@ -90,13 +90,18 @@
     });
 
     document.getElementById('countdownVideo').addEventListener('ended', startPlaying);
+    document.getElementById('beginnerMode').addEventListener('change', beginnerMode);
 
     function freePlay(e) {
-	freePlayMode = e.target.checked;
-	document.getElementById('startPlaying').disabled = freePlayMode;
-	document.getElementById('playback').disabled = freePlayMode;
-	document.getElementById('sendRecording').disabled = freePlayMode;
+        freePlayMode = e.target.checked;
+        document.getElementById('startPlaying').disabled = freePlayMode;
+        document.getElementById('playback').disabled = freePlayMode;
+        document.getElementById('sendRecording').disabled = freePlayMode;
+    }
 
+    function beginnerMode(e) {
+        var mode = document.getElementById('modeSelect');
+        mode.disabled = !e.target.checked;
     }
 
     var votedConfs = {};
@@ -178,14 +183,14 @@
         var trackLength = numBeats  / songInfo.bpm * 60 * 1000;
         var recording = document.getElementById('recordingCircle');
         recording.style.display = 'inline-block';
-	
-	document.getElementById('freePlayBox').disabled = true;
-	playCurrentTrack(); /* Playback while recording */
-        
-	setTimeout(function() {
+
+        document.getElementById('freePlayBox').disabled = true;
+        playCurrentTrack(); /* Playback while recording */
+
+        setTimeout(function() {
             recording.style.display = 'none';
             currentlyRecording = false;
-	    document.getElementById('freePlayBox').disabled = false;
+            document.getElementById('freePlayBox').disabled = false;
         }, trackLength);
     }
 
@@ -232,10 +237,10 @@
         var trackLength = songInfo.measurelen * songInfo.timesigover / songInfo.bpm;
         trackLength = trackLength * 60 * 1000;
 
-	var loop = document.getElementById('loop');
-	if (loop && loop.checked) {
-	    setTimeout(playCurrentTrack, trackLength);
-	}
+        var loop = document.getElementById('loop');
+        if (loop && loop.checked) {
+            setTimeout(playCurrentTrack, trackLength);
+        }
     }
 
     function sendRecording() {

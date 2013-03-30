@@ -14,15 +14,11 @@
     </head>
     <body>
 
-        <!-- Add your site or application content here -->
-        <h1>
-            Welcome to GOOOLE!!
-        </h1>
-	
-	<div class=players>Players: <span id=client_count>1</span></div>
-	<div class=round>Round: <span id=round_count>1</span></div>
-	<div class=round>Submissions: <span id=submission_count>0</span></div>
-	<div class=votes>Votes cast: <span id=votes_cast>0</span></div>
+        <div class=header>
+            <h1>
+                Welcome to GOOOLE!!
+            </h1>
+        </div>
 
         <span id=voteControls data-event=voteControls class=span3>
             <div id=whatToDo>
@@ -41,6 +37,12 @@
                 <input type=number value=1 maxlength=3 id=measurelen>
             </span>
             <input type=submit id=submitVote data-event=submitVote>
+
+            <div class=players>Players: <span id=client_count>1</span></div>
+            <div class=round>Round: <span id=round_count>1</span></div>
+            <div class=round>Submissions: <span id=submission_count>0</span></div>
+            <div class=votes>Votes cast: <span id=votes_cast>0</span></div>
+
         </span>
 
         <span id=voteContainer>
@@ -63,7 +65,7 @@
                 <input id=metronome type=checkbox>
                 <label for=metronome>Metronome</label><br>
                 <input id=beginnerMode type=checkbox>
-                <label for=beginnerMode style="display:inline;">Beginner Mode</label>
+                <label for=beginnerMode data-event=beginner>Beginner Mode</label>
             </div>
 
             <select id=rootNote>
@@ -76,7 +78,7 @@
                 <option value=22>B
             </select>
 
-            <select id=modeSelect>
+            <select id=modeSelect disabled>
                 <option value=1>Major</option>
                 <option value=0>Minor</option>
             </select>

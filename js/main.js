@@ -64,16 +64,14 @@
     });
 
     document.body.addEventListener('keyup', function(e) {
-        if (freePlayMode) {
-            MIDI.noteOff(0, keyToNote[e.which], 0);
-            playing[e.which] = false;
-            notesPlayed.push({
-                on: false
-                , channel: 0
-                , note: keyToNote[e.which]
-                , delay: (new Date().getTime() - startTime) / 1000
-            });
-        }
+	MIDI.noteOff(0, keyToNote[e.which], 0);
+        playing[e.which] = false;
+        notesPlayed.push({
+	    on: false
+            , channel: 0
+            , note: keyToNote[e.which]
+            , delay: (new Date().getTime() - startTime) / 1000
+        });
     });
 
     document.getElementById('countdownVideo').addEventListener('ended', startPlaying);

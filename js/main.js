@@ -101,12 +101,21 @@
             }
         });
 
-        configVoteSubmit(function(data) {
-            var winning_ws = data.publication.winner;
-            songInfo = votedConfs[winning_ws];
-            renderCurrentTrackTemplate();
-            document.getElementById('possibleVotes').innerHTML = '';
-        });
+        configVoteSubmit(timeSigVoteCallback);
+    }
+
+    function timeSigVoteCallback(data) {
+	var winning_ws = data.publication.winner;
+	songInfo = votedConfs[winning_ws];
+	renderCurrentTrackTemplate();
+	document.getElementById('possibleVotes').innerHTML = 'To start next track, please press "Start Recording"';
+    }
+
+    function musicVoteCallback(data) {
+	var winning_ws = data.publication.winner;
+	currentTrack = currentTrack.concat(pubs[winning_ws]);
+	renderCurrentTrackTemplate();
+	document.getElementById('possibleVotes').innerHTML = 'To start next track, please press "Start Recording"';
     }
 
     function configVoteSubmit(callback) {
@@ -176,11 +185,7 @@
             span.innerHTML += recordingVote({ws_id: key});
         }
 
-        configVoteSubmit(function(data) {
-            var winning_ws = data.publication.winner;
-            currentTrack = currentTrack.concat(pubs[winning_ws]);
-            renderCurrentTrackTemplate();
-        });
+        configVoteSubmit(musicVoteCallback);
     }
 
     function renderCurrentTrackTemplate() {

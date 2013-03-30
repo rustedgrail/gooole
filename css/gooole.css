@@ -20,6 +20,10 @@ body {
     display: inline-block;
 }
 
+.networkControls label{
+    vertical-align: sub;
+}
+
 #voteContainer video {
     width: 35%;
     display: none;
@@ -63,6 +67,10 @@ body {
 #voteLabels {
     display: inline-block;
     text-align: right;
+}
+
+#voteLabels div{
+    vertical-align: super;
 }
 
 #voteInputs {

@@ -27,8 +27,8 @@
 
             <span id=voteLabels>
                 <div class=inputHeight>Time Signature:</div>
-                <div class=inputHeight>BPM:</div>
-                <div class=inputHeight>Length in measures:</div>
+                <div class=inputHeight>Beats / Minute:</div>
+                <div class=inputHeight># of Measures:</div>
             </span>
 
             <span id=voteInputs>
@@ -54,20 +54,22 @@
         </span>
 
         <span id=rightBar class="pull-right span4">
-            <div class="recordingControls">
-                <input type=button value="Record" id=startPlaying data-event=startPlaying>
-                <input type=button value="Listen" id=playback data-event=playback>
-                <input type=button value="Submit" id=sendRecording data-event=sendRecording>
-            </div>
+            <span class=networkControls>
+                <div class="recordingControls">
+                    <input type=button value="Record" id=startPlaying data-event=startPlaying>
+                    <input type=button value="Listen" id=playback data-event=playback>
+                    <input type=button value="Submit" id=sendRecording data-event=sendRecording>
+                </div>
 
-            <span class=column>
-                <input type=checkbox id=freePlayBox data-event=freePlay>
-                <label for=freePlayBox>Free Play</label>
-            </span>
+                <span class=column>
+                    <input type=checkbox id=freePlayBox data-event=freePlay>
+                    <label for=freePlayBox>Free Play</label>
+                </span>
 
-            <span class=column>
-                <input id=metronome type=checkbox>
-                <label for=metronome>Metronome</label><br>
+                <span class=column>
+                    <input id=metronome type=checkbox>
+                    <label for=metronome>Metronome</label><br>
+                </span>
             </span>
 
             <div class=padding>

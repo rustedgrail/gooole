@@ -10,13 +10,13 @@ class WSHandler(tornado.websocket.WebSocketHandler):
 
     def open(self):
         self.id = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(6))
-        self.publication = None        
-        # print 'new connection added %s' % (self.id)
+        self.publication = None 
+        print 'new connection added %s' % (self.id)
 
         client_added = jd.add_client(self)
         if not client_added:
             response = {'event': 'close', 'message': 'Game already in progress'}
-            self.write_message(simplejson.dumps(response))
+            self.write_message(simplejson.dumps({'publication': data}))
         # print "Hello %s" % (self.id)
       
     def on_message(self, message):

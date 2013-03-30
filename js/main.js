@@ -82,7 +82,7 @@
         MIDI.noteOff(0, keyToNote[e.which], 0);
         playing[e.which] = false;
         notesPlayed.push({
-	    on: false
+            on: false
             , channel: 0
             , note: keyToNote[e.which]
             , delay: (new Date().getTime() - startTime) / 1000

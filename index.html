@@ -9,7 +9,7 @@
 
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" media=screen>
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.css" media=screen>
         <link rel="stylesheet" href="css/gooole.css">
     </head>
     <body>
@@ -53,49 +53,62 @@
             <span id=recordingCircle></span>
         </span>
 
-        <span id=rightBar class="pull-right span3">
-            <div class="recordingControls padding">
-                <input type=button value="Start Recording" id=startPlaying data-event=startPlaying><br>
-                <input type=button value="Play Recording" id=playback data-event=playback><br>
-                <input type=button value="Send Recording" id=sendRecording data-event=sendRecording>
+        <span id=rightBar class="pull-right span4">
+            <div class="recordingControls">
+                <input type=button value="Record" id=startPlaying data-event=startPlaying>
+                <input type=button value="Listen" id=playback data-event=playback>
+                <input type=button value="Submit" id=sendRecording data-event=sendRecording>
             </div>
-            <div class=padding>
-                <input type=checkbox id=freePlayBox data-event=freePlay style="width:15px;">
-                <label for=freePlayBox>Free Play</label><br>
+
+            <span class=column>
+                <input type=checkbox id=freePlayBox data-event=freePlay>
+                <label for=freePlayBox>Free Play</label>
+            </span>
+
+            <span class=column>
                 <input id=metronome type=checkbox>
                 <label for=metronome>Metronome</label><br>
-                <input id=beginnerMode type=checkbox>
-                <label for=beginnerMode data-event=beginner>Beginner Mode</label>
-            </div>
-
-            <select id=rootNote>
-                <option value=12>C
-                <option value=14>D
-                <option value=16>E
-                <option value=17>F
-                <option value=19>G
-                <option value=21>A
-                <option value=22>B
-            </select>
-
-            <select id=modeSelect disabled>
-                <option value=1>Major</option>
-                <option value=0>Minor</option>
-            </select>
+            </span>
 
             <div class=padding>
-                Octave: <select id=octave>
-                    <option value='1' selected>1</option>
-                    <option value='2'>2</option>
-                    <option value='3'>3</option>
-                    <option value='4'>4</option>
-                    <option value='5'>5</option>
-                    <option value='6'>6</option>
-                    <option value='7'>7</option>
-                </select>
-            </div>
+                <span class=column>
+                    <input id=beginnerMode type=checkbox class=raised>
+                    <label for=beginnerMode data-event=beginner class=raised>Beginner Mode</label>
+                </span>
 
-            <input type=button id=submitKeyChange value="Change Keys" data-event=submitKeyChange>
+                <span class=column>
+                    <select id=modeSelect disabled>
+                        <option value=1>Major</option>
+                        <option value=0>Minor</option>
+                    </select>
+                </span>
+
+                <span class=column>
+                    <select id=rootNote>
+                        <option value=12>C
+                        <option value=14>D
+                        <option value=16>E
+                        <option value=17>F
+                        <option value=19>G
+                        <option value=21>A
+                        <option value=22>B
+                    </select>
+                </span>
+
+                <span class=column>
+                    <select id=octave>
+                        <option value='1'>Octave: 1</option>
+                        <option value='2'>Octave: 2</option>
+                        <option value='3'>Octave: 3</option>
+                        <option value='4'>Octave: 4</option>
+                        <option value='5'>Octave: 5</option>
+                        <option value='6'>Octave: 6</option>
+                        <option value='7'>Octave: 7</option>
+                    </select>
+                </span>
+
+                <input type=button id=submitKeyChange value="Change Keys" data-event=submitKeyChange>
+            </div>
         </span>
 
         <script type="text/x-handlebars-template" id=songVoteTemplate>

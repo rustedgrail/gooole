@@ -8,12 +8,16 @@ body {
 }
 
 #rightBar select {
-    width: 75px;
+    width: 100px;
 }
 
 #rightBar label {
     display: inline-block;
-    vertical-align: sub;
+}
+
+#rightBar .column {
+    width: 120px;
+    display: inline-block;
 }
 
 #voteContainer video {
@@ -36,11 +40,16 @@ body {
 }
 
 .recordingControls input {
-    width: 140px;
+    width: 70px;
+    padding: 0 10px;
 }
 
 .padding {
-    margin: 10px 0;
+    margin: 20px 0;
+}
+
+.raised {
+    vertical-align: super;
 }
 
 #voteInputs input {

@@ -9,8 +9,7 @@
 
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" media=screen>
         <link rel="stylesheet" href="css/gooole.css">
     </head>
     <body>
@@ -20,7 +19,7 @@
             Welcome to GOOOLE!!
         </h1>
 
-        <span id=voteControls data-event=voteControls>
+        <span id=voteControls data-event=voteControls class=span3>
             <div id=whatToDo>
                 Vote for time signature, bpm and length in measure.
             </div>
@@ -44,7 +43,7 @@
             </span>
         </span>
 
-        <span id=rightBar>
+        <span id=rightBar class="pull-right span3">
 			<div id=gameStats></div>
 			
             <div class="recordingControls padding">
@@ -121,7 +120,10 @@
             {{/if}}
         </script>
 
+        <script src="http://code.jquery.com/jquery.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
         <script src="https://raw.github.com/wycats/handlebars.js/1.0.0-rc.3/dist/handlebars.js"></script>
+
         <script src="js/vendor/MIDI.js/inc/base64binary.js"></script>
         <script src="js/vendor/MIDI.js/build/MIDI.min.js"></script>
         <script src="js/main.js"></script>

@@ -2,10 +2,8 @@ body {
     background-color: #590;
 }
 
-#rightBar {
-    float: right;
-    height: 100%;
-    padding-right: 50px;
+#rightBar select {
+    width: 75px;
 }
 
 .recordingControls input {

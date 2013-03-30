@@ -19,6 +19,12 @@ body {
     width: 50px;
 }
 
+.inputHeight {
+    height: 20px;
+    padding: 5px 0;
+    margin-bottom: 10px;
+}
+
 .recordingControls input {
     width: 140px;
 }

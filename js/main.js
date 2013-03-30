@@ -30,7 +30,12 @@
 
     var events = {
         playRecording: playRecording
-        , startPlaying: startPlaying
+        , startPlaying: function() {
+            var video = document.getElementById('countdownVideo');
+            video.load();
+            video.style.display = 'inline';
+            video.play();
+        }
         , submitKeyChange: updateNotes
         , playback: playback
         , sendRecording: sendRecording
@@ -72,6 +77,8 @@
         });
     });
 
+    document.getElementById('countdownVideo').addEventListener('ended', startPlaying);
+
     var votedConfs = {};
     function submitVote(e) {
         socks.send('publish', {
@@ -110,6 +117,7 @@
     }
 
     function startPlaying() {
+        document.getElementById('countdownVideo').style.display = 'none';
         notesPlayed = [];
         startTime = new Date().getTime();
     }

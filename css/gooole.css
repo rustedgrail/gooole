@@ -6,6 +6,11 @@ body {
     width: 75px;
 }
 
+#voteContainer video {
+    width: 35%;
+    display: none;
+}
+
 .recordingControls input {
     width: 140px;
 }

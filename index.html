@@ -18,6 +18,11 @@
         <h1>
             Welcome to GOOOLE!!
         </h1>
+	
+	<div class=players>Players: <span id=client_count>1</span></div>
+	<div class=round>Round: <span id=round_count>1</span></div>
+	<div class=round>Submissions: <span id=submission_count>0</span></div>
+	<div class=votes>Votes cast: <span id=votes_cast>0</span></div>
 
         <span id=voteControls data-event=voteControls class=span3>
             <div id=whatToDo>
@@ -84,12 +89,6 @@
 
             <input type=button id=submitKeyChange value="Change Keys" data-event=submitKeyChange>
         </span>
-
-        <script type="text/x-handlebars-template" id=gameStatsTemplate>
-			<div class=players>Players: {{ clients }}</div>
-			<div class=round>Round: {{ round }}</div>
-			<div class=votes>Votes remaining: {{ votes_remaining }}</div>
-		</script>
 
         <script type="text/x-handlebars-template" id=songVoteTemplate>
             <div>

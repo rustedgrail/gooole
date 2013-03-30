@@ -15,7 +15,7 @@ class WSHandler(tornado.websocket.WebSocketHandler):
 
         client_added = jd.add_client(self)
         if not client_added:
-            response = {'event': 'close', 'message': 'Game already in progress'}
+            data = {'event': 'close', 'params': 'Game already in progress'}
             self.write_message(simplejson.dumps({'publication': data}))
         # print "Hello %s" % (self.id)
       

@@ -12,6 +12,11 @@
         , bpm: 120
     };
 
+    var soundChangeKeys = {
+        90: octaveUp
+        , 88: octaveDown
+    };
+
     var keyToNote = {
         65: 24 //A, C1
         , 87: 25 //W, C#1
@@ -36,10 +41,15 @@
         , sendRecording: sendRecording
         , playCurrentTrack: playCurrentTrack
         , submitVote: submitVote
-	, freePlay: freePlay
+        , freePlay: freePlay
     };
 
-    var pubs = {}, notesPlayed = [], startTime = new Date().getTime(), playing = {}, currentTrack = [], freePlayMode = false;
+    var pubs = {}
+    , notesPlayed = []
+    , startTime = new Date().getTime()
+    , playing = {}
+    , currentTrack = []
+    , freePlayMode = false;
 
     document.body.addEventListener('click', function(e) {
         var event = e.target.getAttribute('data-event');
@@ -49,7 +59,12 @@
     });
 
     document.body.addEventListener('keydown', function(e) {
-	var can_play = freePlayMode || (currentlyRecording && !playing[e.which]);
+        if (typeof soundChangeKeys[e.which] === 'function') {
+            soundChangeKeys[e.which]();
+            return;
+        }
+
+        var can_play = freePlayMode || (currentlyRecording && !playing[e.which]);
         if (can_play) {
             MIDI.noteOn(0, keyToNote[e.which], 127, 0);
             playing[e.which] = true;
@@ -64,7 +79,7 @@
     });
 
     document.body.addEventListener('keyup', function(e) {
-	MIDI.noteOff(0, keyToNote[e.which], 0);
+        MIDI.noteOff(0, keyToNote[e.which], 0);
         playing[e.which] = false;
         notesPlayed.push({
 	    on: false
@@ -243,11 +258,25 @@
         document.getElementById('voteControls').innerHTML = currentTrackTempl(songInfo);
     }
 
+    function octaveUp() {
+        var octaveControl = document.getElementById('octave');
+        var currentOctave = octaveControl.value;
+        octaveControl.value = Math.min(7, (+ currentOctave) + 1);
+        updateNotes();
+    }
+
+    function octaveDown() {
+        var octaveControl = document.getElementById('octave');
+        var currentOctave = octaveControl.value;
+        octaveControl.value = Math.max(1, (+ currentOctave) - 1);
+        updateNotes();
+    }
+
     function updateNotes() {
         var keys, beginnerMode = document.getElementById('beginnerMode').checked;
         var rootNote = (+ document.getElementById('rootNote').value);
         var majorKey = !!document.getElementById('modeSelect').value;
-        var octaveOffset = 12 * document.getElementById('octave').value;
+        var octaveOffset = 12 * (+ document.getElementById('octave').value);
 
         if (beginnerMode) {
             keys = [65, 83, 68, 70, 71, 72, 74, 75];

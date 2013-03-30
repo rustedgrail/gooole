@@ -36,9 +36,10 @@
         , sendRecording: sendRecording
         , playCurrentTrack: playCurrentTrack
         , submitVote: submitVote
+	, freePlay: freePlay
     };
 
-    var pubs = {}, notesPlayed = [], startTime = new Date().getTime(), playing = {}, currentTrack = [];
+    var pubs = {}, notesPlayed = [], startTime = new Date().getTime(), playing = {}, currentTrack = [], freePlayMode = false;
 
     document.body.addEventListener('click', function(e) {
         var event = e.target.getAttribute('data-event');
@@ -48,7 +49,8 @@
     });
 
     document.body.addEventListener('keydown', function(e) {
-        if (currentlyRecording && !playing[e.which]) {
+	var can_play = freePlayMode || (currentlyRecording && !playing[e.which]);
+        if (can_play) {
             MIDI.noteOn(0, keyToNote[e.which], 127, 0);
             playing[e.which] = true;
             notesPlayed.push({
@@ -62,17 +64,27 @@
     });
 
     document.body.addEventListener('keyup', function(e) {
-        MIDI.noteOff(0, keyToNote[e.which], 0);
-        playing[e.which] = false;
-        notesPlayed.push({
-            on: false
-            , channel: 0
-            , note: keyToNote[e.which]
-            , delay: (new Date().getTime() - startTime) / 1000
-        });
+        if (freePlayMode) {
+            MIDI.noteOff(0, keyToNote[e.which], 0);
+            playing[e.which] = false;
+            notesPlayed.push({
+                on: false
+                , channel: 0
+                , note: keyToNote[e.which]
+                , delay: (new Date().getTime() - startTime) / 1000
+            });
+        }
     });
 
     document.getElementById('countdownVideo').addEventListener('ended', startPlaying);
+
+    function freePlay(e) {
+	freePlayMode = e.target.checked;
+	document.getElementById('startPlaying').disabled = freePlayMode;
+	document.getElementById('playback').disabled = freePlayMode;
+	document.getElementById('sendRecording').disabled = freePlayMode;
+
+    }
 
     var votedConfs = {};
     var currentlyRecording = false;
@@ -152,10 +164,14 @@
         var trackLength = numBeats  / songInfo.bpm * 60 * 1000;
         var recording = document.getElementById('recordingCircle');
         recording.style.display = 'inline-block';
-
-        setTimeout(function() {
+	
+	document.getElementById('freePlayBox').disabled = true;
+	playCurrentTrack(); /* Playback while recording */
+        
+	setTimeout(function() {
             recording.style.display = 'none';
             currentlyRecording = false;
+	    document.getElementById('freePlayBox').disabled = false;
         }, trackLength);
     }
 
@@ -201,8 +217,9 @@
 
         var trackLength = songInfo.measurelen * songInfo.timesigover / songInfo.bpm;
         trackLength = trackLength * 60 * 1000;
-	
-	if(document.getElementById('loop').checked) {
+
+	var loop = document.getElementById('loop');
+	if (loop && loop.checked) {
 	    setTimeout(playCurrentTrack, trackLength);
 	}
     }

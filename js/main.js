@@ -6,10 +6,10 @@
     var currentTrackTempl = Handlebars.compile(document.getElementById('currentTrackTemplate').innerHTML);
 
     var songInfo = {
-        measureslen: 8
-        , timesigover: 7
-        , timesigunder: 8
-        , bpm: 246
+        measureslen: 4
+        , timesigover: 4
+        , timesigunder: 4
+        , bpm: 120
     };
 
     var keyToNote = {
@@ -30,12 +30,7 @@
 
     var events = {
         playRecording: playRecording
-        , startPlaying: function() {
-            var video = document.getElementById('countdownVideo');
-            video.load();
-            video.style.display = 'inline';
-            video.play();
-        }
+        , startPlaying: startCountdown
         , submitKeyChange: updateNotes
         , playback: playback
         , sendRecording: sendRecording
@@ -53,7 +48,7 @@
     });
 
     document.body.addEventListener('keydown', function(e) {
-        if (!playing[e.which]) {
+        if (currentlyRecording && !playing[e.which]) {
             MIDI.noteOn(0, keyToNote[e.which], 127, 0);
             playing[e.which] = true;
             notesPlayed.push({
@@ -67,19 +62,30 @@
     });
 
     document.body.addEventListener('keyup', function(e) {
-        MIDI.noteOff(0, keyToNote[e.which], 0);
-        playing[e.which] = false;
-        notesPlayed.push({
-            on: false
-            , channel: 0
-            , note: keyToNote[e.which]
-            , delay: (new Date().getTime() - startTime) / 1000
-        });
+        if (currentlyRecording) {
+            MIDI.noteOff(0, keyToNote[e.which], 0);
+            playing[e.which] = false;
+            notesPlayed.push({
+                on: false
+                , channel: 0
+                , note: keyToNote[e.which]
+                , delay: (new Date().getTime() - startTime) / 1000
+            });
+        }
     });
 
     document.getElementById('countdownVideo').addEventListener('ended', startPlaying);
 
     var votedConfs = {};
+    var currentlyRecording = false;
+
+    function startCountdown() {
+            var video = document.getElementById('countdownVideo');
+            video.load();
+            video.style.display = 'inline';
+            video.play();
+        }
+
     function submitVote(e) {
         socks.send('publish', {
             timesigover: document.getElementById('timesigover').value,
@@ -116,10 +122,20 @@
         }
     }
 
+    window.startPlaying = startPlaying;
     function startPlaying() {
         document.getElementById('countdownVideo').style.display = 'none';
         notesPlayed = [];
         startTime = new Date().getTime();
+        currentlyRecording = true;
+        var trackLength = songInfo.measureslen * songInfo.timesigover / songInfo.bpm;
+        trackLength = trackLength * 60 * 1000;
+        var recording = document.getElementById('recordingCircle');
+        recording.style.display = 'inline-block';
+        setTimeout(function() {
+            recording.style.display = 'none';
+            currentlyRecording = false;
+        }, trackLength);
     }
 
     function playback() {
@@ -135,7 +151,6 @@
 
     function playbackAnyTrack(notesPlayed) {
         notesPlayed.forEach(function(note) {
-            console.log(note);
             if (note.on) {
                 MIDI.noteOn(note.channel, note.note, note.velocity, note.delay);
             }

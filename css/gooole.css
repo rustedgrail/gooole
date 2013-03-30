@@ -11,6 +11,14 @@ body {
     display: none;
 }
 
+#recordingCircle {
+    display: none;
+    background: red;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+}
+
 .recordingControls input {
     width: 140px;
 }

@@ -6,7 +6,7 @@
     var currentTrackTempl = Handlebars.compile(document.getElementById('currentTrackTemplate').innerHTML);
 
     var songInfo = {
-        measureslen: 4
+        measurelen: 4
         , timesigover: 4
         , timesigunder: 4
         , bpm: 120
@@ -137,7 +137,7 @@
         notesPlayed = [];
         startTime = new Date().getTime();
         currentlyRecording = true;
-        var trackLength = songInfo.measureslen * songInfo.timesigover / songInfo.bpm;
+        var trackLength = songInfo.measurelen * songInfo.timesigover / songInfo.bpm;
         trackLength = trackLength * 60 * 1000;
         var recording = document.getElementById('recordingCircle');
         recording.style.display = 'inline-block';
@@ -171,6 +171,13 @@
 
     function playCurrentTrack() {
         playbackAnyTrack(currentTrack);
+
+        var trackLength = songInfo.measurelen * songInfo.timesigover / songInfo.bpm;
+        trackLength = trackLength * 60 * 1000;
+	
+	if(document.getElementById('loop').checked) {
+	    setTimeout(playCurrentTrack, trackLength);
+	}
     }
 
     function sendRecording() {

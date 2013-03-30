@@ -36,9 +36,9 @@
             </span>
 
             <span id=voteInputs>
-                <input type=number maxlength=1 id=timesigover>/<input type=number maxlength=1 id=timesigunder><br>
-                <input type=number maxlength=3 id=bpm><br>
-                <input type=number maxlength=3 id=measurelen>
+                <input type=number value=4 maxlength=1 id=timesigover>/<input type=number value=4 maxlength=1 id=timesigunder><br>
+                <input type=number value=120 maxlength=3 id=bpm><br>
+                <input type=number value=1 maxlength=3 id=measurelen>
             </span>
             <input type=submit id=submitVote data-event=submitVote>
         </span>
@@ -116,6 +116,7 @@
                 You are playing {{measurelen}} bars of {{timesigover}}/{{timesigunder}} time at {{bpm}} bpm.
             </span>
             {{#if currentTrack}}
+		<div><input type=checkbox id=loop /><label style="display:inline;" for=loop> Loop</label></div>
                 <input id=playbackTrack type=button data-event=playCurrentTrack value="Play current track">
             {{/if}}
         </script>

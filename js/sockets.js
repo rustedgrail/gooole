@@ -1,11 +1,11 @@
 function socketTown() {
-    var ws;
+    var ws, clients = 1, count = 0;
     var socket_events = {
-	close: close_conn,
-	client_count: client_count,
-	next_round: next_round,
-	submission: submission,
-	vote_cast: vote_cast
+        close: close_conn,
+        client_count: client_count,
+        next_round: next_round,
+        submission: submission,
+        vote_cast: vote_cast
     }
 
     function init() {
@@ -14,18 +14,21 @@ function socketTown() {
         var uri = '';
 
         ws = new WebSocket("ws://" + host + ":" + port + uri);
-        
-	ws.onclose = function(evt) {
-	    document.getElementsByTagName('body')[0].innerHTML = 'Connection to server closed';
-	};
-        
-	ws.onmessage = function(evt) {
+
+        ws.onclose = function(evt) {
+            document.getElementsByTagName('body')[0].innerHTML = 'Connection to server closed';
+        };
+
+        ws.onmessage = function(evt) {
             data = JSON.parse(evt.data);
-	    if (data.publication.event) {
-		var e = data.publication.event;
-		var p = data.publication.params;
-		socket_events[e](p); }
-            else if (socks.callback) { socks.callback(data); }
+            if (data.publication.event) {
+                var e = data.publication.event;
+                var p = data.publication.params;
+                socket_events[e](p);
+            }
+            else if (socks.callback) {
+                socks.callback(data);
+            }
         };
     }
 
@@ -36,25 +39,34 @@ function socketTown() {
     }
 
     function close_conn(message) {
-	document.getElementsByTagName('body')[0].innerHTML = message;
+        document.getElementsByTagName('body')[0].innerHTML = message;
     }
 
     function submission(submission_count) {
-	document.getElementById('submission_count').innerHTML = submission_count;
+        document.getElementById('whatsLeft').innerHTML = 'Submissions Left: ';
+        count = submission_count;
+        updateCount(clients - submission_count);
     }
-    
-    function client_count(count) {
-	document.getElementById('client_count').innerHTML = count;
+
+    function client_count(client_count) {
+        clients = client_count;
+        updateCount(client_count - count);
     }
-    
+
     function vote_cast(vote_count) {
-	document.getElementById('votes_cast').innerHTML = vote_count;
+        document.getElementById('whatsLeft').innerHTML = 'Votes Left: ';
+        count = vote_count;
+        updateCount(clients - vote_count);
+    }
+
+    function updateCount(count) {
+        document.getElementById('submission_count').innerHTML = count;
     }
 
     function next_round(round) {
-	document.getElementById('round_count').innerHTML = round;
-	document.getElementById('votes_cast').innerHTML = 0;
-	document.getElementById('submission_count').innerHTML = 0;
+        document.getElementById('round_count').innerHTML = round;
+        count = clients;
+        updateCount(clients);
     }
 
     return {

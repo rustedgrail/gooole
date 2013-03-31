@@ -134,17 +134,17 @@
     }
 
     function timeSigVoteCallback(data) {
-	var winning_ws = data.publication.winner;
-	songInfo = votedConfs[winning_ws];
-	renderCurrentTrackTemplate();
-	document.getElementById('possibleVotes').innerHTML = 'To start next track, please press "Start Recording"';
+        var winning_ws = data.publication.winner;
+        songInfo = votedConfs[winning_ws];
+        renderCurrentTrackTemplate();
+        document.getElementById('possibleVotes').innerHTML = 'To start next track, please press "Start Recording"';
     }
 
     function musicVoteCallback(data) {
-	var winning_ws = data.publication.winner;
-	currentTrack = currentTrack.concat(pubs[winning_ws]);
-	renderCurrentTrackTemplate();
-	document.getElementById('possibleVotes').innerHTML = 'To start next track, please press "Start Recording"';
+        var winning_ws = data.publication.winner;
+        currentTrack = currentTrack.concat(pubs[winning_ws]);
+        renderCurrentTrackTemplate();
+        document.getElementById('possibleVotes').innerHTML = 'To start next track, please press "Start Recording"';
     }
 
     function configVoteSubmit(callback) {
